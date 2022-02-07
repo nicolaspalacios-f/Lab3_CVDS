@@ -1,8 +1,8 @@
 # Lab3_CVDS
-### Clases de equivalencia  
-
-
-   
+### Integrantes
+- Juan Carlos Baez Lizarazo
+- Nicolas Fernando Palacios Fajardo
+### Clases de equivalencia     
 - En el directorio de trabajo ejecutar el comando necesario para crear un proyecto maven, basado en un arquetipo:
     - Grupo: edu.eci.cvds
     - Artefacto: ClasesEquivalencia
