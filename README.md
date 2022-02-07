@@ -259,32 +259,86 @@ package edu.eci.cvds.tdd.registry;
 
 - Para correr las pruebas utilice
     <pre>$ mvn package</pre>
+    ![](./img/imgPackageRegistraduria.png)
 - Tambien puede utilizar:
     <pre>$ mvn test</pre>
+    ![](./img/imgTestRegistraduria.png)
 Revise cuál es la diferencia.
+- La diferencia radica en que package empaqueta y prueba, mientras que test solamente prueba.
 
 ### FINALIZAR EL EJERCICIO
 
 - Piense en los casos de equivalencia que se pueden generar del ejercicio para la registraduría, dadas las condiciones. Deben ser al menos 5.
 
 - Complete la implementación del método registerVoter en la clase Registry.java para retornar el resultado esperado según la entrada.
+    ![](./img/imgRegisterResult.png)
 
 - Complete la implementación de la clase RegistryTest.java con (al menos) un método por cada clase de equivalencia, creando diferentes personas y validando que el resultado sea el esperado.
+    ![](./img/imgRegistryTest.png)
+    ![](./img/imgCompilarRegistryTest.png)
 
 ### EJERCICIO "DESCUENTO DE TARIFAS"
 #### REALIZAR DISEÑO DE PRUEBAS
 - Para realizar de forma correcta el diseño de sus pruebas responda las preguntas que se encuentran en el siguiente documento.
+
+1.	De acuerdo con lo indicado, y teniendo en cuenta que NO hay precondiciones, en qué casos se debería arrojar una excepción de tipo ExcepcionParametrosInvalidos?. Agregue esto a la especificación.
+
+    En caso de que la edad, tarifaBase o días de antelación sean negativos, o de que alguno de los parámetros no sea del tipo especificado en la declaración de la función.
+2. En la siguiente tabla enumere un conjunto de clases de equivalencia que -según usted- creen una buena división del conjunto de datos de entrada de la función anterior:
+
+    X = tarifaBase;
+    Y = diasAntelacion; 
+    Z = edad  
+
+    | Número | Clase de equivalencia | Clase de equivalencia|  
+    | --- | ---: |---:|
+    |Z = -15|(-∞, 0)|Invalido, ya que no puede haber edad negativa|
+    |Y = -72|(-∞, 0)|Invalido, ya que no puede comprar vuelos con -72 dias de antelacion, debe ser positivo|
+    |X = -2000|(-∞, 0)|Invalido, no puede haber tarifas negativas|
+    |Y = 10|[0, 20]|Valido, pero no aplica el descuento del 15%|
+    |Y = 30|(20, ∞)|Valido y aplica al descuento del 15%|
+    |Z = 40|[18, 65]|Valido, ya que tiene una edad que se acepta pero no se le da descuento|
+    |Z = 15|[0, 18)|Valido y aplica al desceunto del 5%|
+    |Z = 72|(65, ∞)|Valido y aplica al desceunto del 8%|
+3.	Casos de prueba 
+    - X = 2000; Y = 21; Z = -15  
+    Para este caso no se aplicaría ningún descuento ya que la edad es negativa, y también lanzaría la excepción de ExcepcionParametrosInvalidos
+    - X = 3000; Y = 22; Z = 72  
+    Para este caso aplicaría el descuento del 15% por haber sacado el billete con más de 20 días de antelación y aplicaría el descuento de 8% por ser mayor de 65 años
+    - X = 2000; Y = 15; Z = 40  
+    Para este caso no aplicaría descuento ya que la edad no es menor a 18 años ni mayor a 65 años, adicionalmente no saco el billete con más de 20 días de antelación 
+    - X = 5000; Y = 7; Z = 12  
+    Para este caso aplicaría descuento 5% ya que la edad es menor a 18 años, sin embargo, no saco el billete con más de 20 días de antelación entonces no aplica ese descuento
+    - X = 7000; Y = 24; Z = 22  
+    Para este caso no aplicaría descuento 5% ya que la no edad es menor a 18 años ni mayor a 65 años, sin embargo, saco el billete con más de 20 días de antelación entonces aplica el descuento del 15% 
+    - X = -1000, Y = 21, Z = 20  
+    Para este caso no se aplicaría ningún descuento ya que la tarifa es negativa, y también lanzaría la excepción de ExcepcionParametrosInvalidos
+4. A partir de las clases de equivalencia identificadas en el punto 2, identifique las condiciones límite o de frontera de estas.  
+    Z = 17; Z = 66; Y = 21
+5.	Para cada una de las condiciones de frontera anteriores, defina casos de prueba específicos.
+    - X = 2000, Y = 5, Z = 17
+    En este caso aplicaria al descuento del 5%, con 18 años ya no aplicaria
+    - X = 2000, Y = 5, Z = 66
+    En este caso aplicaria al descuento del 8%, con 65 años ya no aplicaria
+    - X = 2000, Y = 21, Z = 40
+    En este caso aplicaria al descuento del 15%, con 20 dias ya no aplicaria
+
 #### IMPLEMENTACIÓN DE LAS PRUEBAS 
 - Descargue el archivo aerodescuentos.jar y adicione esta nueva dependencia en el archivo pom.xml de su proyecto.  
 Para adicionar una librería personalizada al repositorio local de maven puede ejecutar el siguiente comando.
 
 <pre>$ mvn install:install-file -Dfile=aerodescuentos-1.0.0.jar -DgroupId=edu.eci.cvds -DartifactId=aerodescuentos -Dversion=1.0.0 -Dpackaging=jar</pre>
+![](./img/imgAerodecuentosJar.png)
 
 - Cree el archivo TarifasTest.java en el directorio src/test/java/edu/eci/cvds/tdd/aerodescuentos.  
     - Realice la implementación de las pruebas propuestas en la etapa de diseño de pruebas en esta clase.
     - Para sus pruebas debe usar el método "calculoTarifa" de la clase edu.eci.cvds.tdd.aerodescuentos.CalculadorDescuentos, que se encuentran dentro del JAR de la librería personalizada.
 
+    ![](./img/imgTestAeroDescuentos(1).png)
+    ![](./img/imgTestAeroDescuentos(2).png)
+
 - Ejecute el comando de Maven para las fases de compilación y pruebas. Verifique el resultado exitoso de todas las pruebas y el reporte generado.
+    ![](./img/imgTestAeroDescuentosRes.png)
 
 ### ENTREGAR
 - Crear un repositorio para este proyecto y agregar la url del mismo, como entrega del laboratorio.
